@@ -14,9 +14,7 @@ public class CheckUtils {
             return true;
         if (s.length() == 0)
             return true;
-        if (s.trim().length() == 0)
-            return true;
-        return false;
+        return s.trim().length() == 0;
     }
 
     /**
@@ -24,16 +22,17 @@ public class CheckUtils {
      */
     private final static String MOBILE_NUMBER_CHARS = "^[+0-9][-0-9]{1,}$";
 
+    @Contract(value = "null -> false",pure = true)
     public static boolean isValidMobileNumber(String s) {
-        if (TextUtils.isEmpty( s )) return true;
+        if (TextUtils.isEmpty( s )) return false;
         Pattern p = Pattern.compile( MOBILE_NUMBER_CHARS );
         Matcher m = p.matcher( s );
         return m.matches();
     }
 
     // 校验Tag Alias 只能是数字,英文字母和中文
-    @Contract(value="null ->false",pure=true)
-    public static boolean isValidTagAndAlias(List<String> s) {
+    @Contract(value = "null ->false", pure = true)
+    static boolean isValidTagAndAlias(List<String> s) {
         if (s.isEmpty())
             return false;
         for (String x : s) {

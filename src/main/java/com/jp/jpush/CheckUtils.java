@@ -1,5 +1,7 @@
 package com.jp.jpush;
 
+import org.jetbrains.annotations.*;
+
 import org.apache.http.util.TextUtils;
 
 import java.util.List;
@@ -30,16 +32,18 @@ public class CheckUtils {
     }
 
     // 校验Tag Alias 只能是数字,英文字母和中文
+    @Contract(value="null ->false",pure=true)
     public static boolean isValidTagAndAlias(List<String> s) {
-        boolean flag = true;
+        if (s.isEmpty())
+            return false;
         for (String x : s) {
             Pattern p = Pattern.compile( "^[\u4E00-\u9FA50-9a-zA-Z_!@#$&*+=.|]+$" );
             Matcher m = p.matcher( x );
             if (!m.matches()) {
-                flag = false;
+                return false;
             }
         }
-        return flag;
+        return true;
     }
 
 }

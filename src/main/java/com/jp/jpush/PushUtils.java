@@ -96,7 +96,7 @@ public class PushUtils {
      */
 
     public static PushResult push(List<String> alias, String alert, Map<String, String> extras) {
-        if (CheckUtils.isValidTagAndAlias( alias )) {
+        if (CheckUtils.isValidTagsOrAlias( alias )) {
             ClientConfig clientConfig = ClientConfig.getInstance();
             JPushClient jpushClient = new JPushClient( masterSecret, appKey, null, clientConfig );
             PushPayload payload = buildPushObject_android_ios_alias_alert( alias, alert, extras );
@@ -107,7 +107,7 @@ public class PushUtils {
     }
 
     public static PushResult push(String alia, String alert, Map<String, String> extras) {
-        if (CheckUtils.isValidTagAndAlias( alia )) {
+        if (CheckUtils.isValidTagsOrAlias( alia )) {
             ClientConfig clientConfig = ClientConfig.getInstance();
             JPushClient jpushClient = new JPushClient( masterSecret, appKey, null, clientConfig );
             PushPayload payload = buildPushObject_android_ios_alias_alert( Collections.singletonList( alia ), alert, extras );
@@ -122,7 +122,7 @@ public class PushUtils {
      * 标签推送（范围）
      */
     public static PushResult pushByTags(String tag, String alert, Map<String, String> extras) {
-        if (CheckUtils.isValidTagAndAlias( tag )) {
+        if (CheckUtils.isValidTagsOrAlias( tag )) {
             ClientConfig clientConfig = ClientConfig.getInstance();
             JPushClient jpushClient = new JPushClient( masterSecret, appKey, null, clientConfig );
             PushPayload payload = buildPushObject_android_ios_tags_alert( Collections.singletonList( tag ), alert, extras );
@@ -132,7 +132,7 @@ public class PushUtils {
     }
 
     public static PushResult pushByTags(List<String> tags, String alert, Map<String, String> extras) {
-        if (CheckUtils.isValidTagAndAlias( tags )) {
+        if (CheckUtils.isValidTagsOrAlias( tags )) {
             ClientConfig clientConfig = ClientConfig.getInstance();
             JPushClient jpushClient = new JPushClient( masterSecret, appKey, null, clientConfig );
             PushPayload payload = buildPushObject_android_ios_tags_alert( tags, alert, extras );

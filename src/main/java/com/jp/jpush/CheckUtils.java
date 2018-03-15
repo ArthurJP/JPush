@@ -16,12 +16,15 @@ public class CheckUtils {
         return s.trim().length() == 0;
     }
 
+    /**
+     * 采用严格验证，只要有一项为null，直接返回null
+     */
     @Contract(value = "null -> true", pure = true)
     private static boolean isEmpty(List<String> s) {
-        boolean result = true;
+        boolean result = false;
         for (String x : s) {
-            if (!isEmpty( x ))
-                result = false;
+            if (isEmpty( x ))
+                result = true;
         }
         return result;
     }
@@ -47,20 +50,23 @@ public class CheckUtils {
 
     // 校验Tag Alias 只能是数字,英文字母和中文
     @Contract(value = "null ->false", pure = true)
-    static boolean isValidTagAndAlias(String s) {
+    static boolean isValidTagsOrAlias(String s) {
         if (isEmpty( s ))
             return false;
         return match( s, TAG_ALIA_CHARS );
     }
 
     @Contract(value = "null ->false", pure = true)
-    static boolean isValidTagAndAlias(List<String> s) {
-        if (isEmpty( s.toString() ))
+    static boolean isValidTagsOrAlias(List<String> s) {
+//        null 会在这里返回，但是contract并没有检测出来
+        if (isEmpty( s ))
             return false;
-        for (String x : s) {
-            if (match( x, TAG_ALIA_CHARS )) return false;
+        else {
+            for (String x : s) {
+                if (!match( x, TAG_ALIA_CHARS )) return false;
+            }
+            return true;
         }
-        return true;
     }
 
 }

@@ -15,6 +15,7 @@ import cn.jpush.api.push.model.notification.Notification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,7 @@ public class PushUtils {
                         .build() )
                 .build();
     }
+
     private static PushPayload buildPushObject_android_ios_tags_alert(List<String> tag, String alert, Map<String, String> extras) {
         return PushPayload.newBuilder()
                 .setPlatform( Platform.android_ios() )
@@ -91,8 +93,8 @@ public class PushUtils {
 
     /**
      * 单点推送方法(采用java SDK)
-     *
      */
+
     public static PushResult push(List<String> alias, String alert, Map<String, String> extras) {
         if (CheckUtils.isValidTagAndAlias( alias )) {
             ClientConfig clientConfig = ClientConfig.getInstance();
@@ -104,8 +106,33 @@ public class PushUtils {
         return null;
     }
 
-    public static PushResult pushByTags(List<String> tags,String alert,Map<String,String> extras){
-        if (CheckUtils.isValidTagAndAlias( tags )){
+    public static PushResult push(String alia, String alert, Map<String, String> extras) {
+        if (CheckUtils.isValidTagAndAlias( alia )) {
+            ClientConfig clientConfig = ClientConfig.getInstance();
+            JPushClient jpushClient = new JPushClient( masterSecret, appKey, null, clientConfig );
+            PushPayload payload = buildPushObject_android_ios_alias_alert( Collections.singletonList( alia ), alert, extras );
+            return getPushResult( jpushClient, payload );
+        }
+        log.info( "非法的alias/tags" );
+        return null;
+    }
+
+
+    /**
+     * 标签推送（范围）
+     */
+    public static PushResult pushByTags(String tag, String alert, Map<String, String> extras) {
+        if (CheckUtils.isValidTagAndAlias( tag )) {
+            ClientConfig clientConfig = ClientConfig.getInstance();
+            JPushClient jpushClient = new JPushClient( masterSecret, appKey, null, clientConfig );
+            PushPayload payload = buildPushObject_android_ios_tags_alert( Collections.singletonList( tag ), alert, extras );
+            return getPushResult( jpushClient, payload );
+        }
+        return null;
+    }
+
+    public static PushResult pushByTags(List<String> tags, String alert, Map<String, String> extras) {
+        if (CheckUtils.isValidTagAndAlias( tags )) {
             ClientConfig clientConfig = ClientConfig.getInstance();
             JPushClient jpushClient = new JPushClient( masterSecret, appKey, null, clientConfig );
             PushPayload payload = buildPushObject_android_ios_tags_alert( tags, alert, extras );

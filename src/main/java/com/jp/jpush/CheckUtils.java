@@ -22,7 +22,7 @@ public class CheckUtils {
      */
     private final static String MOBILE_NUMBER_CHARS = "^[+0-9][-0-9]{1,}$";
 
-    @Contract(value = "null -> false",pure = true)
+    @Contract(value = "null -> false", pure = true)
     public static boolean isValidMobileNumber(String s) {
         if (TextUtils.isEmpty( s )) return false;
         Pattern p = Pattern.compile( MOBILE_NUMBER_CHARS );
@@ -31,6 +31,18 @@ public class CheckUtils {
     }
 
     // 校验Tag Alias 只能是数字,英文字母和中文
+    @Contract(value = "null ->false", pure = true)
+    static boolean isValidTagAndAlias(String s) {
+        if (s.isEmpty())
+            return false;
+        Pattern p = Pattern.compile( "^[\u4E00-\u9FA50-9a-zA-Z_!@#$&*+=.|]+$" );
+        Matcher m = p.matcher( s );
+        if (!m.matches()) {
+            return false;
+        }
+        return true;
+    }
+
     @Contract(value = "null ->false", pure = true)
     static boolean isValidTagAndAlias(List<String> s) {
         if (s.isEmpty())
